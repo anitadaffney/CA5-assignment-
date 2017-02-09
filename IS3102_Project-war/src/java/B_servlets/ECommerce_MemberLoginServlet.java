@@ -41,18 +41,21 @@ public class ECommerce_MemberLoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
 
             String memberEmail = loginMember(email, password);
+           
 
             if (memberEmail != null) {
                 List<CountryEntity> countries = facilityManagementBean.getListOfCountries();
                 session.setAttribute("countries", countries);
                 
                 session.setAttribute("memberEmail", memberEmail);
+              
+            
                 response.sendRedirect("ECommerce_GetMember");
             } else {
                 result = "Login fail. Username or password is wrong or account is not activated.";
                 response.sendRedirect("/IS3102_Project-war/B/SG/memberLogin.jsp?errMsg=" + result);
             }
-
+   
         } catch (Exception ex) {
             out.println(ex);
             ex.printStackTrace();
@@ -62,7 +65,7 @@ public class ECommerce_MemberLoginServlet extends HttpServlet {
     public String loginMember(String email, String password) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client
-                .target("http://localhost:8080/IS3102_WebService-Student/webresources/entity.memberentity").path("login")
+                .target("http://localhost:8080/WebService_Student-CA4-/webresources/entity.memberentity").path("login")
                 .queryParam("email", email)
                 .queryParam("password", password);
         Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);

@@ -68,6 +68,7 @@
                             <div class="col-md-6">
                                 <div class="summary entry-summary">
                                     <h2 class="shorter"><strong><%=furnitures.get(a).getName()%></strong></h2>
+                                    
                                     <%
                                         if (isMemberLoggedIn == true) {
                                     %>

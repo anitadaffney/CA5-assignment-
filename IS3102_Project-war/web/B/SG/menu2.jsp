@@ -8,7 +8,7 @@
             </a>
         </h1>
         <%
-           String memberName = (String) (session.getAttribute("memberName"));
+           String memberName = (String) (session.getAttribute("memberEmail"));
             if (memberName == null) {
 
         %>

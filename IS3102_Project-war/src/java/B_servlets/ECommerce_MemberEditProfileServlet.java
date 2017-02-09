@@ -60,7 +60,7 @@ public class ECommerce_MemberEditProfileServlet extends HttpServlet {
             //if(password.equals(rePassword)){
                 Client client = ClientBuilder.newClient();
             WebTarget target = client
-                    .target("http://localhost:8080/IS3102_WebService-Student/webresources/entity.memberentity").path("updateMember")
+                    .target("http://localhost:8080/WebService_Student-CA4-/webresources/entity.memberentity").path("updateMember")
                     .queryParam("name", name)
                     .queryParam("email", email)
                     .queryParam("phone", phone)

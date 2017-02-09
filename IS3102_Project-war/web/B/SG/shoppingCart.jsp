@@ -2,6 +2,7 @@
 <%@page import="HelperClasses.ShoppingCartLineItem"%>
 <%@page import="EntityManager.WishListEntity"%>
 <%@page import="java.util.List"%>
+<%@page import="HelperClasses.Furniture"%>
 <%@page import="EntityManager.Item_CountryEntity"%>
 <%@page import="EntityManager.FurnitureEntity"%>
 <%@page import="EntityManager.RetailProductEntity"%>
@@ -13,6 +14,9 @@
     <body>
         <%
             double finalPrice = 0.0;
+            int furnitureId;
+            furnitureId = Integer.parseInt(request.getParameter("id"));
+            List<Furniture> furnitures = (List<Furniture>) (session.getAttribute("furnitures"));
         %>
         <script>
             var totalPrice = 0;
@@ -45,7 +49,7 @@
             }
             function minus(SKU) {
                 window.event.returnValue = true;
-                document.shoppingCart.action = "../../ECommerce_MinusFurnitureToListServlet?SKU=" + SKU;
+                document.shoppingCart.action = "../../ECommerce_ReduceFurnitureToListServlet?SKU=" + SKU;
                 document.shoppingCart.submit();
             }
             function plus(SKU, name, price, imageURL) {
@@ -127,7 +131,7 @@
                                                         <%ArrayList<ShoppingCartLineItem> shoppingCart = (ArrayList<ShoppingCartLineItem>) (session.getAttribute("shoppingCart"));
                                                             try {
                                                                 if (shoppingCart != null && shoppingCart.size() > 0) {
-                                                                    //for (ShoppingCartLineItem item : shoppingCart) {
+                                                                    for (ShoppingCartLineItem item : shoppingCart) {
                                                         %>
                                                         <tr class="cart_table_item">
                                                             <td class="product-remove">
@@ -135,33 +139,33 @@
                                                             </td>
                                                             <td class="product-thumbnail">
                                                                 <a href="furnitureProductDetails.jsp">
-                                                                    <img width="100" height="100" alt="" class="img-responsive" src="../../..<%=ImageURL()%>">
+                                                                    <img width="100" height="100" alt="" class="img-responsive" src="../../..<%=furnitures.get(furnitureId).getImageUrl()%>">
                                                                 </a>
                                                             </td>
                                                             <td class="product-name">
-                                                                <a class="productDetails" href="furnitureProductDetails.jsp">Insert product name</a>
+                                                                <a class="productDetails" href="furnitureProductDetails.jsp"><%=furnitures.get(furnitureId).getName()%></a>
                                                             </td>
                                                             <td class="product-price">
-                                                                $<span class="amount" id="price<%=SKU()%>">
+                                                                $<span class="amount" id="price<%=furnitures.get(furnitureId).getSKU()%>">
                                                                     insert price here
                                                                 </span>
                                                             </td>
                                                             <td class="product-quantity">
                                                                 <form enctype="multipart/form-data" method="post" class="cart">
                                                                     <div class="quantity">
-                                                                        <input type="button" class="minus" value="-" onclick="minus('<%=SKU()%>')">
-                                                                        <input type="text" disabled="true" class="input-text qty text" title="Qty" value="" name="quantity" min="1" step="1" id="<%=SKU()%>">
-                                                                        <input type="button" class="plus" value="+" onclick="plus('<%=SKU()%>', '<%=Name()%>',<%=Price()%>, '<%=ImageURL()%>')">
+                                                                        <input type="button" class="minus" value="-" onclick="minus('<%=furnitures.get(furnitureId).getSKU()%>')">
+                                                                        <input type="text" disabled="true" class="input-text qty text" title="Qty" value="" name="quantity" min="1" step="1" id="<%=furnitures.get(furnitureId).getSKU()%>">
+                                                                        <input type="button" class="plus" value="+" onclick="plus('<%=furnitures.get(furnitureId).getSKU()%>', '<%=furnitures.get(furnitureId).getName()%>',<%=furnitures.get(furnitureId).getPrice()%>, '<%=furnitures.get(furnitureId).getImageUrl()%>')">
                                                                     </div>
                                                                 </form>
                                                             </td>
                                                             <td class="product-subtotal">
-                                                                $<span class="amount" id="totalPrice<%=SKU()%>">
+                                                                $<span class="amount" id="totalPrice<%=furnitures.get(furnitureId).getSKU()%>">
                                                                     insert total price here
                                                                 </span>
                                                             </td>
                                                         </tr>
-                                                        <%                                                                 //   }
+                                                        <%      }
                                                                 }
                                                             } catch (Exception ex) {
                                                                 System.out.println(ex);

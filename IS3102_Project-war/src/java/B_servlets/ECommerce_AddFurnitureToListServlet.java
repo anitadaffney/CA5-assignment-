@@ -5,16 +5,16 @@
  */
 package B_servlets;
 
-import CorporateManagement.FacilityManagement.FacilityManagementBeanLocal;
-import EntityManager.CountryEntity;
-import EntityManager.MemberEntity;
-import HelperClasses.Member;
+import HelperClasses.Furniture;
+import HelperClasses.ShoppingCartLineItem;
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.System.out;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,66 +29,41 @@ import javax.ws.rs.core.Response;
 
 /**
  *
- * @author ONG
+ * @author User
  */
-@WebServlet(name = "ECommerce_GetMember", urlPatterns = {"/ECommerce_GetMember"})
-public class ECommerce_GetMember extends HttpServlet {
+public class ECommerce_AddFurnitureToListServlet extends HttpServlet {
 
-    @EJB
-    private FacilityManagementBeanLocal facilityManagementBean;
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+   
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-
-        HttpSession session = request.getSession();
-        try {
-            String email = (String) (session.getAttribute("memberEmail"));
+           try {
+             HttpSession session = request.getSession();
+             String sku = request.getParameter("sku");
+             String name = request.getParameter("name");
+             String imageURL = request.getParameter("imageURL");
+             double price = Double.parseDouble(request.getParameter("price"));
+             
+          
+            ArrayList<ShoppingCartLineItem> shoppingCart = (ArrayList<ShoppingCartLineItem>) (session.getAttribute("shoppingCart"));
             
-                List<CountryEntity> countries = facilityManagementBean.getListOfCountries();
-                session.setAttribute("countries", countries);
-
-                 Member member = searchMember(email);
-//                out.println(member);
-                session.setAttribute("member", member);
-                response.sendRedirect("/IS3102_Project-war/B/SG/memberProfile.jsp");
-     
-        } catch (Exception ex) {
-            out.println(ex);
-            ex.printStackTrace();
-        }
-
+            session.setAttribute("shoppingCart", shoppingCart);
+  
+             if (shoppingCart == null) {
+                 response.sendRedirect("/IS3102_Project-war/B/SG/shoppingCart.jsp");
+                return; 
+             }
+             else {
+             response.sendRedirect("/IS3102_Project-war/B/SG/shoppingCart.jsp" );
+           }
+           }
+           catch (Exception ex) {
+            out.println("\n\n " + ex.getMessage());
+           }
     }
+           
 
-    public Member searchMember(String email) {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client
-                .target("http://localhost:8080/WebService_Student-CA4-/webresources/entity.memberentity").path("searchMember")
-                .queryParam("email", email);
-        Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
-        Response response = invocationBuilder.get();
-        System.out.println("status: " + response.getStatus());
-
-        if (response.getStatus() != 200) {
-            return null;
-        } else {
-
-        }
-        Member m = new Member();
-        m = response.readEntity(Member.class);
-        return m;
-    }
+   
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -130,13 +105,3 @@ public class ECommerce_GetMember extends HttpServlet {
     }// </editor-fold>
 
 }
-
-
-
-
-
-
-
-
-
-

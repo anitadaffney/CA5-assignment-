@@ -69,8 +69,12 @@
                                                 <input type="hidden" name="furnitureNumber" value="<%= i %>"/>
                                                 <input type="hidden" name="categoryName" value="<%=category%>" />
                                                 <input type="submit" class="btn btn-primary btn-block" value="More Details"/>
+                                                  
                                                 
-                                            </form>
+                                           </form>
+                                                <form action="shoppingCart.jsp"> 
+                                                    <input type="submit" class="btn btn-primary btn-block" value="Add To Cart"/>
+                                                </form>
                                             <%
                                                 if (isMemberLoggedIn == true) {
                                             %>
@@ -80,7 +84,7 @@
                                                 <input type="hidden" name="price" value="<%=furnitures.get(i).getPrice()%>"/>
                                                 <input type="hidden" name="name" value="<%=furnitures.get(i).getName()%>"/>
                                                 <input type="hidden" name="imageURL" value="<%=furnitures.get(i).getImageUrl()%>"/>
-                                                <input type="submit" name="btnEdit" class="btn btn-primary btn-block" value="Add To Cart"/>
+                                               <!--<input type="submit" name="btnEdit" class="btn btn-primary btn-block" value="Add To Cart"/>-->
                                             </form>
                                             <%
                                                 }

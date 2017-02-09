@@ -3,6 +3,7 @@ package B_servlets;
 import HelperClasses.RetailProduct;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +41,7 @@ public class ECommerce_AllRetailProductsServlet extends HttpServlet {
         Client client = ClientBuilder.newClient();
         WebTarget target = client
                 //.target("http://localhost:8080/IS3102_WebService/webresources/entity.retailproductentity")
-                .target("http://localhost:8080/IS3102_WebService-Student/webresources/entity.retailproductentity")
+                .target("http://localhost:8080/WebService_Student-CA4-/webresources/entity.retailproductentity")
                 .path("getRetailProductList")
                 .queryParam("countryID", countryID);
         Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
