@@ -32,30 +32,32 @@ import javax.ws.rs.core.Response;
  * @author User
  */
 public class ECommerce_AddFurnitureToListServlet extends HttpServlet {
+    
+    
 
-   
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
            try {
              HttpSession session = request.getSession();
-             String sku = request.getParameter("sku");
-             String name = request.getParameter("name");
-             String imageURL = request.getParameter("imageURL");
-             double price = Double.parseDouble(request.getParameter("price"));
+             Long countryID=(Long) session.getAttribute("countryID");
              
-          
-            ArrayList<ShoppingCartLineItem> shoppingCart = (ArrayList<ShoppingCartLineItem>) (session.getAttribute("shoppingCart"));
-            
-            session.setAttribute("shoppingCart", shoppingCart);
-  
-             if (shoppingCart == null) {
-                 response.sendRedirect("/IS3102_Project-war/B/SG/shoppingCart.jsp");
-                return; 
-             }
-             else {
-             response.sendRedirect("/IS3102_Project-war/B/SG/shoppingCart.jsp" );
-           }
+             ShoppingCartLineItem cart=new ShoppingCartLineItem();
+             cart.setId(request.getParameter("id"));
+             cart.setSKU(request.getParameter("SKU"));
+             cart.setName(request.getParameter("name"));
+             cart.setImageURL(request.getParameter("imageURL"));
+             cart.setPrice(Double.parseDouble(request.getParameter("price")));
+             cart.setQuantity(1);
+             
+             cart.setCountryID(countryID);
+             
+             ArrayList<ShoppingCartLineItem> Shoppingcart=new ArrayList<ShoppingCartLineItem>();
+             Shoppingcart.add(cart);
+             
+             session.setAttribute("shoppingCart",Shoppingcart);
+                response.sendRedirect("/IS3102_Project-war/B/SG/shoppingCart.jsp?goodMsg=Item Successfully added into the cart!");
+
            }
            catch (Exception ex) {
             out.println("\n\n " + ex.getMessage());
