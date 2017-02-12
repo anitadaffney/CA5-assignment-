@@ -24,7 +24,7 @@ import javax.ws.rs.core.Response;
 
 /**
  *
- * @author Lim
+ * @author EnidTingz
  */
 @WebServlet(name = "ECommerce_AddFurnitureToListServlet", urlPatterns = {"/ECommerce_AddFurnitureToListServlet"})
 public class ECommerce_AddFurnitureToListServlet extends HttpServlet {
@@ -84,13 +84,13 @@ public class ECommerce_AddFurnitureToListServlet extends HttpServlet {
         }
     }
 
-    /*public int getQuantityOfSKU(Long CountryID, String SKU) {
+    public int getQuantityOfSKU(Long CountryID, String SKU) {
         try {
             Client client = ClientBuilder.newClient();
             WebTarget target = client
                     .target("http://localhost:8080/WebServices/webresources/entity.countryentity/")
                     .path("getQuantity")
-                    .queryParam("CountryID", CountryID)
+                    .queryParam("countryID", CountryID)
                     .queryParam("SKU", SKU);
             Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
             Response response = invocationBuilder.get();
@@ -104,7 +104,7 @@ public class ECommerce_AddFurnitureToListServlet extends HttpServlet {
             return 0;
         }
 
-    }*/
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

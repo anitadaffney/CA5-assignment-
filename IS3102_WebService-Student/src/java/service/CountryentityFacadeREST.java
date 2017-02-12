@@ -86,6 +86,29 @@ public class CountryentityFacadeREST extends AbstractFacade<Countryentity> {
         }
         return countryList;
     }
+    @GET
+    @Path("getQuantity")
+    @Produces({"application/json"})
+    public Response getItemQuantityOfStore(@QueryParam("countryID") Long countryID, @QueryParam("SKU") String SKU) {
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/islandfurniture-it07?zeroDateTimeBehavior=convertToNull&user=root&password=12345");
+            String stmt = "Select li.QUANTITY, i.sku  from country_ecommerce c, warehouseentity w, storagebinentity sb, storagebinentity_lineitementity sbli, lineitementity li, itementity i where li.ITEM_ID=i.ID and sbli.lineItems_ID=li.ID and sb.ID=sbli.StorageBinEntity_ID and w.id=sb.WAREHOUSE_ID and c.warehouseentity_id=w.id and sb.type<>'Outbound' WHEN sku=?&&countryID=??";
+
+            PreparedStatement ps = conn.prepareStatement(stmt);
+            ps.setLong(1, countryID);
+            ps.setString(2, SKU);
+            ResultSet rs = ps.executeQuery();
+            int qty = 0;
+            if (rs.next()) {
+                qty = rs.getInt("sum");
+            }
+
+            return Response.ok(qty + "", MediaType.APPLICATION_JSON).build();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
     
     @Override
     protected EntityManager getEntityManager() {
